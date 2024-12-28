@@ -2,6 +2,7 @@ package com.yagocloud.api_voll_med.domain.medico;
 
 import com.yagocloud.api_voll_med.domain.endereco.CadastroEnderecoDTO;
 import com.yagocloud.api_voll_med.domain.endereco.Endereco;
+import com.yagocloud.api_voll_med.domain.medico.dtos.AtualizarDadosMedicoDTO;
 import com.yagocloud.api_voll_med.domain.medico.dtos.CadastroMedicoDTO;
 import jakarta.persistence.*;
 
@@ -45,6 +46,21 @@ public class Medico {
         this.crm = cadastroMedicoDTO.crm();
         this.especialidade = cadastroMedicoDTO.especialidade();
         this.endereco = new Endereco(cadastroMedicoDTO.cadastroEnderecoDTO());
+    }
+
+    public void atualizarDados(AtualizarDadosMedicoDTO atualizarDadosMedicoDTO) {
+        if (atualizarDadosMedicoDTO.nome() != null) {
+            this.nome = atualizarDadosMedicoDTO.nome();
+        }
+        if (atualizarDadosMedicoDTO.email() != null) {
+            this.email = atualizarDadosMedicoDTO.email();
+        }
+        if (atualizarDadosMedicoDTO.telefone() != null) {
+            this.telefone = atualizarDadosMedicoDTO.telefone();
+        }
+        if (atualizarDadosMedicoDTO.cadastroEnderecoDTO() != null) {
+            this.endereco.atualizarDadosEndereco(atualizarDadosMedicoDTO.cadastroEnderecoDTO());
+        }
     }
 
     public Long getId() {

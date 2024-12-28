@@ -1,12 +1,11 @@
 package com.yagocloud.api_voll_med.controllers;
 
 import com.yagocloud.api_voll_med.domain.medico.MedicoRepository;
+import com.yagocloud.api_voll_med.domain.medico.dtos.AtualizarDadosMedicoDTO;
 import com.yagocloud.api_voll_med.domain.medico.dtos.InformacaoMedicoDTO;
 import com.yagocloud.api_voll_med.domain.medico.dtos.ListarMedicoDTO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +28,12 @@ public class MedicoController {
     public InformacaoMedicoDTO buscarPorId(@PathVariable Long id) {
         var medico = medicoRepository.getReferenceById(id);
         return new InformacaoMedicoDTO(medico);
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizarDadosMedico(@RequestBody AtualizarDadosMedicoDTO dadosMedicoDTO) {
+        var dadosNovos = medicoRepository.getReferenceById(dadosMedicoDTO.id());
+        dadosNovos.atualizarDados(dadosMedicoDTO);
     }
 }
