@@ -29,7 +29,7 @@ public class MedicoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ListarMedicoDTO>> listarMedicoDTOS(@PageableDefault(size = 5) Pageable page) {
+    public ResponseEntity<Page<ListarMedicoDTO>> listarMedicoDTOS(@PageableDefault(size = 10) Pageable page) {
         var result = medicoRepository.findAllByAtivoTrue(page).map(ListarMedicoDTO::new);
         return ResponseEntity.ok(result);//Deve Retorna um 200 ok
     }
