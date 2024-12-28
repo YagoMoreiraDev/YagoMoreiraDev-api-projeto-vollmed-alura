@@ -7,6 +7,9 @@ import com.yagocloud.api_voll_med.domain.medico.dtos.CadastroMedicoDTO;
 import com.yagocloud.api_voll_med.domain.medico.dtos.InformacaoMedicoDTO;
 import com.yagocloud.api_voll_med.domain.medico.dtos.ListarMedicoDTO;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +27,8 @@ public class MedicoController {
     }
 
     @GetMapping
-    public List<ListarMedicoDTO> listarMedicoDTOS() {
-        return medicoRepository.findAllByAtivoTrue().stream().map(ListarMedicoDTO::new).toList();
+    public Page<ListarMedicoDTO> listarMedicoDTOS(@PageableDefault(size = 5) Pageable page) {
+        return medicoRepository.findAllByAtivoTrue(page).map(ListarMedicoDTO::new);
     }
 
     @GetMapping("/{id}")
