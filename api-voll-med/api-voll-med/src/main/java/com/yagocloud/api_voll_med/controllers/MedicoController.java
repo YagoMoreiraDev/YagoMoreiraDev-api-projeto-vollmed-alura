@@ -6,6 +6,7 @@ import com.yagocloud.api_voll_med.domain.medico.dtos.AtualizarDadosMedicoDTO;
 import com.yagocloud.api_voll_med.domain.medico.dtos.CadastroMedicoDTO;
 import com.yagocloud.api_voll_med.domain.medico.dtos.InformacaoMedicoDTO;
 import com.yagocloud.api_voll_med.domain.medico.dtos.ListarMedicoDTO;
+import jakarta.validation.Valid;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,14 +36,14 @@ public class MedicoController {
 
     @PutMapping
     @Transactional
-    public void atualizarDadosMedico(@RequestBody AtualizarDadosMedicoDTO dadosMedicoDTO) {
+    public void atualizarDadosMedico(@RequestBody @Valid AtualizarDadosMedicoDTO dadosMedicoDTO) {
         var dadosNovos = medicoRepository.getReferenceById(dadosMedicoDTO.id());
         dadosNovos.atualizarDados(dadosMedicoDTO);
     }
 
     @PostMapping
     @Transactional
-    public void adicionarMedico(@RequestBody CadastroMedicoDTO cadastroMedicoDTO) {
+    public void adicionarMedico(@RequestBody @Valid CadastroMedicoDTO cadastroMedicoDTO) {
         medicoRepository.save(new Medico(cadastroMedicoDTO));
     }
 
