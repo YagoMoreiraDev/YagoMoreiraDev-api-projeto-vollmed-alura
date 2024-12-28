@@ -20,6 +20,8 @@ public class Medico {
     private String telefone;
     private String crm;
 
+    private Boolean ativo = true;
+
     @Enumerated(EnumType.STRING)
     private Especialidade especialidade;
 
@@ -46,6 +48,10 @@ public class Medico {
         this.crm = cadastroMedicoDTO.crm();
         this.especialidade = cadastroMedicoDTO.especialidade();
         this.endereco = new Endereco(cadastroMedicoDTO.cadastroEnderecoDTO());
+    }
+
+    public void inativarCadastro() {
+        this.ativo = false;
     }
 
     public void atualizarDados(AtualizarDadosMedicoDTO atualizarDadosMedicoDTO) {

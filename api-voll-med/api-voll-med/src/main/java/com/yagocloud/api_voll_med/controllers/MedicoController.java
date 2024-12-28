@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/medicos")
 public class MedicoController {
+
     //Meus repositories retornam EntidadeJPA e preciso converter para EntidadeDTO
     private final MedicoRepository medicoRepository;
 
