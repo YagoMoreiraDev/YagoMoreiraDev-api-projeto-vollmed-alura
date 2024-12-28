@@ -1,4 +1,19 @@
 package com.yagocloud.api_voll_med.domain.endereco;
 
-public record CadastroEnderecoDTO(String logradouro, String numero, String bairro, String cep, String complemento, String cidade, String uf) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CadastroEnderecoDTO(
+        @NotBlank
+        String logradouro,
+        @NotBlank
+        String numero,
+        @NotBlank
+        String bairro,
+        @NotBlank
+        String cep,
+        String complemento,
+        @NotBlank
+        String cidade,
+        @NotBlank
+        String uf) {
 }
