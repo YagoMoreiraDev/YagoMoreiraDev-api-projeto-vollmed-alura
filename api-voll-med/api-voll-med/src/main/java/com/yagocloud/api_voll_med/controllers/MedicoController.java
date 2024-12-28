@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -30,13 +31,13 @@ public class MedicoController {
     @GetMapping
     public ResponseEntity<Page<ListarMedicoDTO>> listarMedicoDTOS(@PageableDefault(size = 5) Pageable page) {
         var result = medicoRepository.findAllByAtivoTrue(page).map(ListarMedicoDTO::new);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(result);//Deve Retorna um 200 ok
     }
 
     @GetMapping("/{id}")
-    public InformacaoMedicoDTO buscarPorId(@PathVariable Long id) {
+    public ResponseEntity buscarPorId(@PathVariable Long id) {
         var medico = medicoRepository.getReferenceById(id);
-        return new InformacaoMedicoDTO(medico);
+        return ResponseEntity.ok(new InformacaoMedicoDTO(medico));//Deve Retorna um 200 ok
     }
 
     @PutMapping
@@ -45,13 +46,18 @@ public class MedicoController {
         var dadosNovos = medicoRepository.getReferenceById(dadosMedicoDTO.id());
         dadosNovos.atualizarDados(dadosMedicoDTO);
 
-        return ResponseEntity.ok(new InformacaoMedicoDTO(dadosNovos));
+        return ResponseEntity.ok(new InformacaoMedicoDTO(dadosNovos));//Deve Retorna um 200 ok
     }
 
     @PostMapping
     @Transactional
-    public void adicionarMedico(@RequestBody @Valid CadastroMedicoDTO cadastroMedicoDTO) {
-        medicoRepository.save(new Medico(cadastroMedicoDTO));
+    public ResponseEntity<InformacaoMedicoDTO> adicionarMedico(@RequestBody @Valid CadastroMedicoDTO cadastroMedicoDTO,
+                                                               UriComponentsBuilder uriBuild) {
+        var result = medicoRepository.save(new Medico(cadastroMedicoDTO));
+
+        var URI = uriBuild.path("/medicos/{id}").buildAndExpand(result.getId()).toUri();
+
+        return ResponseEntity.created(URI).body(new InformacaoMedicoDTO(result));//Deve Retorna 201 Created
     }
 
     @DeleteMapping("/{id}")
@@ -59,6 +65,6 @@ public class MedicoController {
     public ResponseEntity excluirMedico(@PathVariable Long id) {
         var medicoInativo = medicoRepository.getReferenceById(id);
         medicoInativo.inativarCadastro();
-        return ResponseEntity.noContent().build();//Retorna um 204
+        return ResponseEntity.noContent().build();//Deve Retorna um 204 No Content
     }
 }
