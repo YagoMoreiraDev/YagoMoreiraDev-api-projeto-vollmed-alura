@@ -24,7 +24,7 @@ public class MedicoController {
 
     @GetMapping
     public List<ListarMedicoDTO> listarMedicoDTOS() {
-        return medicoRepository.findAll().stream().map(ListarMedicoDTO::new).toList();
+        return medicoRepository.findAllByAtivoTrue().stream().map(ListarMedicoDTO::new).toList();
     }
 
     @GetMapping("/{id}")
@@ -49,6 +49,7 @@ public class MedicoController {
     @DeleteMapping("/{id}")
     @Transactional
     public void excluirMedico(@PathVariable Long id) {
-        medicoRepository.deleteById(id);
+        var medicoInativo = medicoRepository.getReferenceById(id);
+        medicoInativo.inativarCadastro();
     }
 }
