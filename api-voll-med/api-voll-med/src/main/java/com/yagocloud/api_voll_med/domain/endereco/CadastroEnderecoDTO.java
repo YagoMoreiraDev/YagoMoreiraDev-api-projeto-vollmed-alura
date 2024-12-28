@@ -11,6 +11,7 @@ public record CadastroEnderecoDTO(
         String bairro,
         @NotBlank
         String cep,
+
         String complemento,
         @NotBlank
         String cidade,

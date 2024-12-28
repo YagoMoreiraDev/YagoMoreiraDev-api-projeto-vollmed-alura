@@ -17,8 +17,8 @@ public record InformacaoMedicoDTO(
         this(medico.getId(),
                 medico.getNome(),
                 medico.getEmail(),
-                medico.getCrm(),
                 medico.getTelefone(),
+                medico.getCrm(),
                 medico.getEspecialidade(),
                 medico.getEndereco());
     }

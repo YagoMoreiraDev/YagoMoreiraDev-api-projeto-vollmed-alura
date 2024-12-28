@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +28,9 @@ public class MedicoController {
     }
 
     @GetMapping
-    public Page<ListarMedicoDTO> listarMedicoDTOS(@PageableDefault(size = 5) Pageable page) {
-        return medicoRepository.findAllByAtivoTrue(page).map(ListarMedicoDTO::new);
+    public ResponseEntity<Page<ListarMedicoDTO>> listarMedicoDTOS(@PageableDefault(size = 5) Pageable page) {
+        var result = medicoRepository.findAllByAtivoTrue(page).map(ListarMedicoDTO::new);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
@@ -39,9 +41,11 @@ public class MedicoController {
 
     @PutMapping
     @Transactional
-    public void atualizarDadosMedico(@RequestBody @Valid AtualizarDadosMedicoDTO dadosMedicoDTO) {
+    public ResponseEntity atualizarDadosMedico(@RequestBody @Valid AtualizarDadosMedicoDTO dadosMedicoDTO) {
         var dadosNovos = medicoRepository.getReferenceById(dadosMedicoDTO.id());
         dadosNovos.atualizarDados(dadosMedicoDTO);
+
+        return ResponseEntity.ok(new InformacaoMedicoDTO(dadosNovos));
     }
 
     @PostMapping
@@ -52,8 +56,9 @@ public class MedicoController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void excluirMedico(@PathVariable Long id) {
+    public ResponseEntity excluirMedico(@PathVariable Long id) {
         var medicoInativo = medicoRepository.getReferenceById(id);
         medicoInativo.inativarCadastro();
+        return ResponseEntity.noContent().build();//Retorna um 204
     }
 }
