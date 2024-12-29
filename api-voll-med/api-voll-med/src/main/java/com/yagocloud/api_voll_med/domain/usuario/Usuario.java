@@ -28,6 +28,11 @@ public class Usuario implements UserDetails {
         this.senha = senha;
     }
 
+    public Usuario(UsuarioControllerDTO dadosDTO) {
+        this.login = dadosDTO.login();
+        this.senha = dadosDTO.senha();
+    }
+
     public Long getId() {
         return id;
     }

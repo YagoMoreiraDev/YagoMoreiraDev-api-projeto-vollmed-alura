@@ -31,6 +31,6 @@ public class TokenService {
     }
     //Metodo para limitar o tempo que o token permanece valido
     private Instant dataExpiracaoToken( ) {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-3:00"));
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }
