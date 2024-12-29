@@ -1,5 +1,6 @@
 package com.yagocloud.api_voll_med.intra.security;
 
+import com.yagocloud.api_voll_med.domain.usuario.Usuario;
 import com.yagocloud.api_voll_med.domain.usuario.UsuarioControllerDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class AutenticacaoController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody @Valid UsuarioControllerDTO usuarioControllerDTO) {
         var autenticaToken = new UsernamePasswordAuthenticationToken(
@@ -25,6 +29,8 @@ public class AutenticacaoController {
                 usuarioControllerDTO.senha());
         var autenticacao = authenticationManager.authenticate(autenticaToken);
 
-        return ResponseEntity.ok().build();
+        var tokenJWT = tokenService.gerarToken((Usuario) autenticacao.getPrincipal());
+
+        return ResponseEntity.ok(new DadosTokenDTO(tokenJWT));
     }
 }
